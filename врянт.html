@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FREEzvezd - Получи свои звезды</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .diagonal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000 0%, #111111 25%, #222222 50%, #333333 75%, #444444 100%);
+            z-index: -2;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #fff, #ffed4e, #ffd700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+            position: relative;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
+            }
+            to {
+                text-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 25px rgba(255, 215, 0, 0.5), 0 0 35px rgba(255, 215, 0, 0.3);
+            }
+        }
+
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+        }
+
+        .content {
+            max-width: 900px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .description {
+            font-size: 1.8rem;
+            line-height: 1.6;
+            margin-bottom: 50px;
+            font-weight: 300;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .highlight {
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        .rules-section {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .rules-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .rules-description {
+            font-size: 1.6rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: rgba(20, 20, 30, 0.6);
+            border-radius: 15px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .rules-description .highlight {
+            display: block;
+            margin-top: 10px;
+            font-size: 1.8rem;
+            line-height: 1.8;
+        }
+
+        /* Таймер */
+        .timer-container {
+            margin: 30px 0;
+        }
+
+        .timer-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        #timer {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: #ffd700;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 15px 30px;
+            border-radius: 10px;
+            border: 2px solid #ffd700;
+            display: inline-block;
+            min-width: 250px;
+            letter-spacing: 3px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Секретный код */
+        .secret-code-container {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: rgba(20, 20, 40, 0.6);
+            border-radius: 15px;
+            border: 1px dashed rgba(255, 215, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .secret-code-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .secret-code-title i {
+            font-size: 1.4rem;
+        }
+
+        .code-input-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        #secretCodeInput {
+            flex-grow: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+
+        #secretCodeInput:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .skip-button {
+            background: linear-gradient(45deg, #4a00e0, #8e2de2);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .skip-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(142, 45, 226, 0.4);
+        }
+
+        /* Кнопка */
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #000;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 18px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .cta-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
+            letter-spacing: 3px;
+        }
+
+        .cta-button:disabled {
+            background: linear-gradient(45deg, #666, #888);
+            color: #aaa;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Модальное окно с формой */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #111, #222);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+            border: 2px solid #ffd700;
+            position: relative;
+            animation: modalAppear 0.5s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #ffd700;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .close-modal:hover {
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            color: #ffd700;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #000;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 18px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+        }
+
+        /* Окно взлома */
+        .hack-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .hack-container {
+            text-align: center;
+            padding: 30px;
+            animation: hackAppear 0.5s ease-out;
+        }
+
+        @keyframes hackAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .hack-icon {
+            font-size: 5rem;
+            color: #ff0000;
+            margin-bottom: 30px;
+            animation: hackPulse 1s infinite alternate;
+        }
+
+        @keyframes hackPulse {
+            from {
+                transform: scale(1);
+                text-shadow: 0 0 10px #ff0000;
+            }
+            to {
+                transform: scale(1.2);
+                text-shadow: 0 0 30px #ff0000;
+            }
+        }
+
+        .hack-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            color: #ff0000;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px #ff0000;
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .hack-message {
+            font-size: 2rem;
+            color: #ff0000;
+            margin-bottom: 40px;
+            line-height: 1.5;
+            text-shadow: 0 0 10px #ff0000;
+            font-weight: 700;
+        }
+
+        .close-hack {
+            background: linear-gradient(45deg, #ff0000, #ff4444);
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 15px 40px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        .close-hack:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #ff0000;
+        }
+
+        /* Код взлома (анимация) */
+        .hack-code {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .code-line {
+            position: absolute;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            opacity: 0.7;
+            animation: codeFall linear infinite;
+        }
+
+        @keyframes codeFall {
+            0% { top: -50px; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3.5rem;
+                letter-spacing: 3px;
+            }
+            
+            .description {
+                font-size: 1.4rem;
+            }
+            
+            .rules-title {
+                font-size: 2rem;
+            }
+            
+            .rules-description {
+                font-size: 1.4rem;
+            }
+            
+            #timer {
+                font-size: 2rem;
+                padding: 12px 25px;
+                min-width: 200px;
+            }
+            
+            .code-input-container {
+                flex-direction: column;
+            }
+            
+            .skip-button {
+                width: 100%;
+            }
+            
+            .modal-title {
+                font-size: 1.8rem;
+            }
+            
+            .modal-content {
+                padding: 30px 25px;
+            }
+            
+            .hack-title {
+                font-size: 2.5rem;
+            }
+            
+            .hack-message {
+                font-size: 1.5rem;
+            }
+            
+            .hack-icon {
+                font-size: 4rem;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .cta-button {
+                font-size: 1.2rem;
+                padding: 15px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .description {
+                font-size: 1.2rem;
+            }
+            
+            .rules-title {
+                font-size: 1.8rem;
+            }
+            
+            .rules-description {
+                font-size: 1.2rem;
+            }
+            
+            #timer {
+                font-size: 1.7rem;
+                padding: 10px 20px;
+                min-width: 180px;
+            }
+            
+            .modal-content {
+                padding: 25px 20px;
+                width: 95%;
+            }
+            
+            .modal-title {
+                font-size: 1.5rem;
+            }
+            
+            .hack-title {
+                font-size: 2rem;
+            }
+            
+            .hack-message {
+                font-size: 1.2rem;
+            }
+            
+            .hack-icon {
+                font-size: 3rem;
+            }
+            
+            .cta-button {
+                font-size: 1.1rem;
+                padding: 15px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="diagonal-bg"></div>
+    <div class="stars" id="stars-container"></div>
+    
+    <!-- Модальное окно с формой -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <h2 class="modal-title">Заполните данные</h2>
+            <form id="userForm">
+                <div class="form-group">
+                    <label for="fullName">Ф.И.О:</label>
+                    <input type="text" id="fullName" placeholder="Введите ваше полное имя" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Номер телефона:</label>
+                    <input type="tel" id="phone" placeholder="+7 (XXX) XXX-XX-XX" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">Юзернейм (Telegram):</label>
+                    <input type="text" id="username" placeholder="@username" required>
+                </div>
+                
+                <button type="submit" class="submit-button">
+                    <i class="fas fa-star"></i> Пополнить
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Окно взлома -->
+    <div class="hack-overlay" id="hackOverlay">
+        <div class="hack-code" id="hackCode"></div>
+        <div class="hack-container">
+            <div class="hack-icon">
+                <i class="fas fa-skull-crossbones"></i>
+            </div>
+            <h1 class="hack-title">ВЗЛОМАН!</h1>
+            <div class="hack-message">
+                ХАХАХАХА МЫ ТЕБЯ ВЗЛОМАЛИ !<br>
+                МЫ ЗНАЕМ ПРО ТЕБЯ ВСЕ ВАСИЛИНА !
+            </div>
+            <button class="close-hack" id="closeHack">Закрыть</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header class="header">
+            <h1 class="title">FREEzvezd</h1>
+        </header>
+        
+        <main class="content">
+            <p class="description">
+                Привет, если ты здесь, значит тебе нужны <span class="highlight">звёзды</span>?<br><br>
+                Хочешь <span class="highlight">1,000 звёзд</span>?<br>
+                Хочешь <span class="highlight">10,000 звёзд</span>?<br>
+                Хочешь быть <span class="highlight">богатым миллионером</span>?<br>
+                И дарить звёзды друзьям?<br><br>
+                Значит тебе <span class="highlight">сюда</span>!
+            </p>
+            
+            <div class="rules-section">
+                <h2 class="rules-title">Правила как получить</h2>
+                
+                <div class="rules-description">
+                    Чтобы получить звёзды, сначала вам надо сделать это:
+                    <span class="highlight">1. Написать нам в ТГ под постом<br>
+                    2. Ждать 5 мин<br>
+                    3. Получить по кнопке снизу</span>
+                </div>
+            </div>
+            
+            <!-- Таймер -->
+            <div class="timer-container">
+                <div class="timer-title">Таймер активации кнопки:</div>
+                <div id="timer">10:00</div>
+            </div>
+            
+            <!-- Секретный код для пропуска таймера -->
+            <div class="secret-code-container">
+                <div class="secret-code-title">
+                    <i class="fas fa-key"></i> Секретный код для пропуска таймера:
+                </div>
+                <div class="code-input-container">
+                    <input type="text" id="secretCodeInput" placeholder="Введите секретный код">
+                    <button class="skip-button" id="skipTimerBtn">Пропустить таймер</button>
+                </div>
+            </div>
+            
+            <!-- Кнопка получения звезд -->
+            <button class="cta-button" id="getStarsBtn" disabled>
+                <span id="buttonText">Ожидание активации...</span>
+                <span id="countdownText" style="display: none;">Доступ через: <span id="countdown">10:00</span></span>
+            </button>
+        </main>
+        
+        <footer class="footer">
+            <p>FREEzvezd &copy; 2023 | Все звёзды для вас</p>
+        </footer>
+    </div>
+
+    <script>
+        // Создание звездного фона
+        function createStars() {
+            const starsContainer = document.getElementById('stars-container');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Случайный размер звезды
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Случайное положение
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // Случайная анимация
+                const delay = Math.random() * 5;
+                star.style.animationDelay = `${delay}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Таймер
+        let timerInterval;
+        let timeLeft = 600; // 10 минут в секундах
+        let isTimerActive = false;
+        const SECRET_CODE = "ghaqwer"; // Секретный код для пропуска таймера
+        
+        function startTimer() {
+            if (isTimerActive) return;
+            
+            isTimerActive = true;
+            const timerDisplay = document.getElementById('timer');
+            const button = document.getElementById('getStarsBtn');
+            const buttonText = document.getElementById('buttonText');
+            const countdownText = document.getElementById('countdownText');
+            const countdown = document.getElementById('countdown');
+            
+            button.disabled = true;
+            buttonText.style.display = 'none';
+            countdownText.style.display = 'inline';
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                
+                // Обновляем отображение таймера
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                timerDisplay.textContent = timeString;
+                countdown.textContent = timeString;
+                
+                // Если время вышло
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "00:00";
+                    countdown.textContent = "00:00";
+                    activateButton();
+                }
+            }, 1000);
+        }
+        
+        function activateButton() {
+            const button = document.getElementById('getStarsBtn');
+            const buttonText = document.getElementById('buttonText');
+            const countdownText = document.getElementById('countdownText');
+            
+            // Активируем кнопку
+            button.disabled = false;
+            buttonText.textContent = "Получить звёзды";
+            buttonText.style.display = 'inline';
+            countdownText.style.display = 'none';
+            
+            // Анимация активации кнопки
+            button.style.animation = 'pulse 1s infinite alternate';
+            
+            // Создаем стиль для анимации пульсации
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes pulse {
+                    from { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+                    to { box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Уведомление
+            alert('✅ Кнопка активирована! Теперь вы можете получить звёзды!');
+        }
+        
+        // Функция пропуска таймера
+        function skipTimer() {
+            const codeInput = document.getElementById('secretCodeInput');
+            const enteredCode = codeInput.value.trim();
+            
+            if (enteredCode === "") {
+                showCodeMessage("⚠️ Введите код!", "#ff9900");
+                return;
+            }
+            
+            if (enteredCode === SECRET_CODE) {
+                // Останавливаем таймер
+                clearInterval(timerInterval);
+                timeLeft = 0;
+                isTimerActive = false;
+                
+                // Активируем кнопку
+                activateButton();
+                
+                // Обновляем таймер
+                document.getElementById('timer').textContent = "00:00";
+                
+                // Показываем сообщение об успехе
+                showCodeMessage("✅ Код принят! Таймер пропущен!", "#00ff00");
+                
+                // Эффект успеха
+                createSuccessEffect();
+                
+                // Очищаем поле ввода
+                codeInput.value = "";
+                
+                // Скрываем поле ввода кода
+                document.querySelector('.secret-code-container').style.display = 'none';
+            } else {
+                showCodeMessage("❌ Неверный код! Попробуйте еще раз.", "#ff0000");
+                
+                // Эффект ошибки
+                createErrorEffect();
+                
+                // Очищаем поле ввода
+                codeInput.value = "";
+                codeInput.focus();
+            }
+        }
+        
+        function showCodeMessage(message, color) {
+            // Создаем элемент для сообщения
+            let messageEl = document.querySelector('.code-message');
+            
+            if (!messageEl) {
+                messageEl = document.createElement('div');
+                messageEl.className = 'code-message';
+                messageEl.style.marginTop = '10px';
+                messageEl.style.fontWeight = 'bold';
+                messageEl.style.textAlign = 'center';
+                messageEl.style.padding = '10px';
+                messageEl.style.borderRadius = '5px';
+                document.querySelector('.secret-code-container').appendChild(messageEl);
+            }
+            
+            messageEl.textContent = message;
+            messageEl.style.color = color;
+            messageEl.style.textShadow = `0 0 5px ${color}`;
+            
+            // Удаляем сообщение через 3 секунды
+            setTimeout(() => {
+                if (messageEl.parentNode) {
+                    messageEl.parentNode.removeChild(messageEl);
+                }
+            }, 3000);
+        }
+        
+        function createSuccessEffect() {
+            // Создаем эффект взрыва звезд
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const star = document.createElement('div');
+                    star.style.position = 'fixed';
+                    star.style.width = '10px';
+                    star.style.height = '10px';
+                    star.style.backgroundColor = '#00ff00';
+                    star.style.borderRadius = '50%';
+                    star.style.zIndex = '1000';
+                    
+                    // Начальная позиция в центре экрана
+                    const startX = 50;
+                    const startY = 50;
+                    
+                    // Конечная позиция (случайная)
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 30 + Math.random() * 40;
+                    const endX = startX + Math.cos(angle) * distance;
+                    const endY = startY + Math.sin(angle) * distance;
+                    
+                    star.style.left = `${startX}%`;
+                    star.style.top = `${startY}%`;
+                    star.style.boxShadow = '0 0 15px 5px #00ff00';
+                    
+                    document.body.appendChild(star);
+                    
+                    // Анимация взрыва
+                    const animation = star.animate([
+                        { 
+                            left: `${startX}%`, 
+                            top: `${startY}%`, 
+                            opacity: 1,
+                            transform: 'scale(1)' 
+                        },
+                        { 
+                            left: `${endX}%`, 
+                            top: `${endY}%`, 
+                            opacity: 0,
+                            transform: 'scale(0.1)' 
+                        }
+                    ], {
+                        duration: 1000 + Math.random() * 500,
+                        easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
+                    });
+                    
+                    // Удаление элемента после анимации
+                    animation.onfinish = () => {
+                        star.remove();
+                    };
+                }, i * 50);
+            }
+        }
+        
+        function createErrorEffect() {
+            // Создаем эффект тряски
+            const container = document.querySelector('.secret-code-container');
+            container.style.animation = 'shake 0.5s';
+            
+            // Создаем стиль для анимации тряски
+            const shakeStyle = document.createElement('style');
+            shakeStyle.textContent = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                }
+            `;
+            document.head.appendChild(shakeStyle);
+            
+            // Удаляем анимацию после завершения
+            setTimeout(() => {
+                container.style.animation = '';
+            }, 500);
+        }
+        
+        // Модальное окно с формой
+        const modalOverlay = document.getElementById('modalOverlay');
+        const closeModalBtn = document.getElementById('closeModal');
+        
+        // Окно взлома
+        const hackOverlay = document.getElementById('hackOverlay');
+        const closeHackBtn = document.getElementById('closeHack');
+        const getStarsBtn = document.getElementById('getStarsBtn');
+        const hackCode = document.getElementById('hackCode');
+        const skipTimerBtn = document.getElementById('skipTimerBtn');
+        const secretCodeInput = document.getElementById('secretCodeInput');
+        
+        function openModal() {
+            modalOverlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Эффект падающих звезд при открытии модального окна
+            createFallingStars(3);
+        }
+        
+        function closeModal() {
+            modalOverlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        function openHack() {
+            hackOverlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Создаем эффект падающего кода (Matrix-эффект)
+            createHackCodeEffect();
+            
+            // Звуковые эффекты (имитация)
+            simulateHackSounds();
+            
+            // Создаем эффект падающих звезд
+            createFallingStars(10, '#ff0000');
+        }
+        
+        function closeHack() {
+            hackOverlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Останавливаем генерацию кода
+            clearInterval(hackCodeInterval);
+            
+            // Сбрасываем таймер заново
+            timeLeft = 600;
+            isTimerActive = false;
+            startTimer();
+            
+            // Показываем поле ввода кода снова
+            document.querySelector('.secret-code-container').style.display = 'block';
+        }
+        
+        let hackCodeInterval;
+        
+        function createHackCodeEffect() {
+            // Очищаем предыдущий код
+            hackCode.innerHTML = '';
+            
+            // Случайные строки кода для эффекта
+            const codeLines = [
+                "root@hack:~# accessing vasilina_system",
+                "> БАЗА ДАННЫХ ЗАГРУЖЕНА",
+                "> ПОЛЬЗОВАТЕЛЬ: ВАСИЛИНА",
+                "> СКАНИРОВАНИЕ... 25%",
+                "> ДОСТУП К КАМЕРЕ... УСПЕШНО",
+                "> ДОСТУП К МИКРОФОНУ... УСПЕШНО",
+                "> МЕСТОПОЛОЖЕНИЕ: ОПРЕДЕЛЕНО",
+                "> ПЕРЕХВАТ СООБЩЕНИЙ... В ПРОЦЕССЕ",
+                "> СКАНИРОВАНИЕ... 75%",
+                "> ВСЕ ДАННЫЕ ПОЛУЧЕНЫ!",
+                "root@hack:~# hack_complete",
+                "ACCESS GRANTED - FULL CONTROL",
+                "SYSTEM COMPROMISED",
+                "DATA EXFILTRATION: 100%",
+                "USER: VASILINA - TRACKING ACTIVE"
+            ];
+            
+            let lineIndex = 0;
+            
+            hackCodeInterval = setInterval(() => {
+                if (lineIndex < codeLines.length) {
+                    const codeLine = document.createElement('div');
+                    codeLine.classList.add('code-line');
+                    codeLine.textContent = codeLines[lineIndex];
+                    
+                    // Случайное положение
+                    codeLine.style.left = `${Math.random() * 90}%`;
+                    
+                    // Случайная скорость
+                    const duration = 3 + Math.random() * 4;
+                    codeLine.style.animationDuration = `${duration}s`;
+                    
+                    hackCode.appendChild(codeLine);
+                    
+                    // Удаляем старые строки
+                    setTimeout(() => {
+                        if (codeLine.parentNode === hackCode) {
+                            hackCode.removeChild(codeLine);
+                        }
+                    }, duration * 1000);
+                    
+                    lineIndex++;
+                }
+            }, 300);
+        }
+        
+        function simulateHackSounds() {
+            // Имитация звуков взлома через вибрацию (если поддерживается)
+            if (navigator.vibrate) {
+                // Короткая вибрация
+                navigator.vibrate([100, 50, 100, 50, 200]);
+                
+                // Дополнительная вибрация через 2 секунды
+                setTimeout(() => {
+                    navigator.vibrate([200, 100, 300]);
+                }, 2000);
+            }
+        }
+        
+        // Обработчик кнопки получения звезд
+        getStarsBtn.addEventListener('click', function() {
+            if (!this.disabled) {
+                // Анимация нажатия
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+                
+                // Открываем модальное окно с формой
+                openModal();
+                
+                // Создаем эффект падающих звезд
+                createFallingStars(5);
+            }
+        });
+        
+        // Обработчик кнопки пропуска таймера
+        skipTimerBtn.addEventListener('click', skipTimer);
+        
+        // Обработчик нажатия Enter в поле ввода кода
+        secretCodeInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                skipTimer();
+            }
+        });
+        
+        // Обработчик закрытия модального окна
+        closeModalBtn.addEventListener('click', closeModal);
+        
+        // Закрытие модального окна при клике на фон
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+        
+        // Обработчик закрытия окна взлома
+        closeHackBtn.addEventListener('click', closeHack);
+        
+        // Обработчик формы
+        document.getElementById('userForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Получаем данные из формы
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            const username = document.getElementById('username').value;
+            
+            // Валидация
+            if (!fullName || !phone || !username) {
+                alert('Пожалуйста, заполните все поля!');
+                return;
+            }
+            
+            // Закрываем модальное окно с формой
+            closeModal();
+            
+            // Открываем окно взлома через небольшую задержку
+            setTimeout(() => {
+                openHack();
+            }, 500);
+            
+            // Сбрасываем форму
+            this.reset();
+        });
+        
+        // Эффект падающих звезд
+        function createFallingStars(count, color = '#ffd700') {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const fallingStar = document.createElement('div');
+                    fallingStar.style.position = 'fixed';
+                    fallingStar.style.width = '3px';
+                    fallingStar.style.height = '3px';
+                    fallingStar.style.backgroundColor = color;
+                    fallingStar.style.borderRadius = '50%';
+                    fallingStar.style.zIndex = '1000';
+                    fallingStar.style.left = `${Math.random() * 100}%`;
+                    fallingStar.style.top = '-10px';
+                    fallingStar.style.boxShadow = `0 0 10px 2px ${color}`;
+                    
+                    document.body.appendChild(fallingStar);
+                    
+                    // Анимация падения
+                    const animation = fallingStar.animate([
+                        { top: '-10px', opacity: 1 },
+                        { top: '110%', opacity: 0 }
+                    ], {
+                        duration: 2000 + Math.random() * 2000,
+                        easing: 'cubic-bezier(0.1, 0.7, 0.6, 1)'
+                    });
+                    
+                    // Удаление элемента после анимации
+                    animation.onfinish = () => {
+                        fallingStar.remove();
+                    };
+                }, i * 300);
+            }
+        }
+        
+        // Инициализация при загрузке страницы
+        window.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            startTimer();
+            
+            // Добавляем мерцание к заголовку
+            const title = document.querySelector('.title');
+            setInterval(() => {
+                title.style.animation = 'none';
+                setTimeout(() => {
+                    title.style.animation = 'glow 2s ease-in-out infinite alternate';
+                }, 10);
+            }, 10000);
+            
+            // Маска для телефона
+            const phoneInput = document.getElementById('phone');
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                if (value.length > 0) {
+                    if (value[0] === '7' || value[0] === '8') {
+                        value = '+7 ' + value.substring(1);
+                    } else {
+                        value = '+7 ' + value;
+                    }
+                    
+                    if (value.length > 6) {
+                        value = value.substring(0, 6) + ' ' + value.substring(6);
+                    }
+                    if (value.length > 10) {
+                        value = value.substring(0, 10) + ' ' + value.substring(10);
+                    }
+                    if (value.length > 13) {
+                        value = value.substring(0, 13) + ' ' + value.substring(13);
+                    }
+                    if (value.length > 16) {
+                        value = value.substring(0, 16);
+                    }
+                }
+                
+                e.target.value = value;
+            });
+            
+            // Подсказка для кода (можно удалить в финальной версии)
+            console.log("Секретный код для пропуска таймера: ghaqwer");
+        });
+    </script>
+</body>
+</html>
